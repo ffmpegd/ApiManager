@@ -10,10 +10,13 @@
         $sql = "select * from user where login_name = '{$login_name}' and login_pwd = '{$login_pwd}' and isdel = '0'";
         $info = find($sql);
         if(!empty($info)){
+            $cids = array_map(function($d) { return $d['aid'];}, select('select aid from auth where uid='.$info['id']));
+
             session('id',$info['id']); //用户id
             session('nice_name',$info['nice_name']); //昵称
             session('login_name',$info['login_name']); //登录名
             session('issupper',$info['issuper']); //是否为超级管理员
+            session('cids',json_encode($cids)); //是否为超级管理员
             $time = time();
             $sql = "update user set last_time = '{$time}' where id = {$info['id']}";
             update($sql);

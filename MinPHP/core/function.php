@@ -137,6 +137,18 @@
         }
 
     }
+    //delete
+    function delete($sql){
+        switch(C('db->linktype')){
+            case 'pdo':
+                return M()->exec($sql);
+                break;
+            case 'mysqli':
+                return M()->query($sql);
+                break;
+        }
+
+    }
 
     //设置和获取session值
     function session($key = null,$value = null){
@@ -157,6 +169,18 @@
         $login_name = session('login_name');
         return empty($login_name) ? false : true;
     }
+
+    // 查询权限,如果没有传值,返回用户权限列表
+    function getCids($cid = 0) {
+        $cids = session('cids');
+        $cids = $cids ? json_decode($cids, true) : [];
+        if($cid){
+            return in_array($cid, $cids);
+        }
+        return $cids;
+
+    }
+
 
     //判断是否为超级管理员
     function is_supper(){

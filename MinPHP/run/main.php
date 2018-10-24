@@ -39,11 +39,16 @@
             <?php
             if(is_login()){
                 echo '欢迎您：' . session('nice_name') . '&nbsp;&nbsp;';
-                //如果是接口详情页的话,就显示【导出】按钮 与 【排序】按钮
-                if($_GET['act']=='api' && isset($_GET['tag']) && !isset($_GET['op'])){
-                    echo '<a href="?act=sort&tag='.$_GET['tag'].'">排序&nbsp;&nbsp;</a>';
-                    echo '<a href="?act=export&tag='.$_GET['tag'].'">导出&nbsp;&nbsp;</a>';
+                if(is_supper()){
+                    echo '<a href="?act=userlist">用户列表</a>&nbsp;';
+                    //如果是接口详情页的话,就显示【导出】按钮 与 【排序】按钮
+                    if($_GET['act']=='api' && isset($_GET['tag']) && !isset($_GET['op'])){
+                        echo '<a href="?act=sort&tag='.$_GET['tag'].'">排序&nbsp;&nbsp;</a>';
+                        echo '<a href="?act=export&tag='.$_GET['tag'].'">导出&nbsp;&nbsp;</a>';
+                    }
                 }
+
+
                 echo '<a href="?act=modpwd">修改密码</a>&nbsp;&nbsp;<a href="?act=login&type=quit">退出&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>';
             }else{
                 echo '<a href="?act=login">登录&nbsp;&nbsp;<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>';
@@ -56,7 +61,16 @@
             <div style="padding:16px;">
                 <?php
                 if(!empty($file)){
-                    include($file);
+                    // 如果是查看分类,并且不是管理员,则验证是否属于该用户
+                    if(isset($_GET['tag']) && !is_supper()){
+                        if(getCids($_GET['tag'])) {
+                            include($file);
+                        }else{
+                            echo '无权访问';
+                        }
+                    }else{
+                        include($file);
+                    }
                 }
                 ?>
             </div>

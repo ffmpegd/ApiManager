@@ -33,6 +33,21 @@
             $menu = ' - ' . "<a href='".U(array('act'=>'api','tag'=>$_GET['tag']))."'>{$menu['cname']}</a>";
             $file ='./MinPHP/run/sort.php';
             break;
+        //添加用户页面
+        case 'adduser':
+            $menu = ' - 添加用户';
+            $file ='./MinPHP/run/adduser.php';
+            break;
+        //用户列表页面
+        case 'userlist':
+            $menu = ' - 添加用户';
+            $file ='./MinPHP/run/userlist.php';
+            break;
+        //编辑用户页面
+        case 'updateuser':
+            $menu = ' - 编辑用户';
+            $file ='./MinPHP/run/updateuser.php';
+            break;
         //导出静态文件
         case 'export':
             die(include('./MinPHP/run/export.php'));
